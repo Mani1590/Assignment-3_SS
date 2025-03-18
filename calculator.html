@@ -74,79 +74,93 @@
     </style>
     
     <script>
-        function addToDisplay(value) {
-            document.getElementById("calculation").innerText += value;
-        }
-
+        let numbers = [];
+        let operators = [];
+        let currentNumber = "";
+        let resultDisplayed = false;
+        
         function clearDisplay() {
             document.getElementById("calculation").innerText = "";
             document.getElementById("result").innerText = "";
+            numbers = [];
+            operators = [];
+            currentNumber = "";
+            resultDisplayed = false;
+        }
+
+        function addToDisplay(value) {
+            let display = document.getElementById("calculation");
+
+            if (resultDisplayed) {
+                if (!isNaN(value)) {
+                    clearDisplay();
+                }
+                resultDisplayed = false;
+            }
+            if (["+", "-", "*", "/"].includes(value)) {
+                if (currentNumber !== "") {
+                    numbers.push(parseFloat(currentNumber));
+                    currentNumber = "";
+                }
+                if (numbers.length > 0) {
+                    operators.push(value);
+                }
+            } else {
+                currentNumber += value;
+            }
+
+            display.innerText += value;
         }
 
         function deleteLast() {
-            let currentText = document.getElementById("calculation").innerText;
-            document.getElementById("calculation").innerText = currentText.slice(0, -1);
+            let display = document.getElementById("calculation").innerText;
+            if (display.length > 0) {
+                document.getElementById("calculation").innerText = display.slice(0, -1);
+            }
         }
 
         function calculateResult() {
-            try {
-                let expression = document.getElementById("calculation").innerText;
-                let operator, numbers;
-                
-                if (expression.includes("+")) {
-                    operator = "+";
-                } else if (expression.includes("-")) {
-                    operator = "-";
-                } else if (expression.includes("*")) {
-                    operator = "*";
-                } else if (expression.includes("/")) {
-                    operator = "/";
-                } else {
-                    document.getElementById("result").innerText = "Error!";
-                    return;
-                }
+            if (currentNumber !== "") {
+                numbers.push(parseFloat(currentNumber));
+            }
 
-                numbers = expression.split(operator);
-                let num1 = parseFloat(numbers[0]);
-                let num2 = parseFloat(numbers[1]);
+            if (numbers.length === 0) return;
 
-                let result;
-                switch (operator) {
+            let result = numbers[0];
+
+            for (let i = 0; i < operators.length; i++) {
+                let num = numbers[i + 1];
+
+                switch (operators[i]) {
                     case "+":
-                        result = num1 + num2;
+                        result += num;
                         break;
                     case "-":
-                        result = num1 - num2;
+                        result -= num;
                         break;
                     case "*":
-                        result = num1 * num2;
+                        result *= num;
                         break;
                     case "/":
-                        result = num2 !== 0 ? num1 / num2 : "Error!";
+                        result = num !== 0 ? result / num : "Error!";
                         break;
                     default:
                         result = "Error!";
                 }
-
-                document.getElementById("result").innerText = result;
-            } catch {
-                document.getElementById("result").innerText = "Error!";
             }
+
+            document.getElementById("result").innerText = result;
+
+            numbers = [];
+            operators = [];
+            currentNumber = result.toString();
         }
 
         document.addEventListener("keydown", function(event) {
             if (event.key >= "0" && event.key <= "9") {
                 addToDisplay(event.key);
-            } else if (event.key === ".") {
-                addToDisplay(".");
-            } else if (event.key === "+") {
-                addToDisplay("+");
-            } else if (event.key === "-") {
-                addToDisplay("-");
-            } else if (event.key === "*") {
-                addToDisplay("*");
-            } else if (event.key === "/") {
-                addToDisplay("/");
+            } else if (["+", "-", "*", "/"].includes(event.key)) {
+                addToDisplay(event.key);
             } else if (event.key === "Enter") {
                 calculateResult();
             } else if (event.key === "Backspace") {
