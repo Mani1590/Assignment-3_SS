@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link href="https://cdn.getbootstrap.com/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .calculator {
+            width: 300px;
+            background: #222;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .display {
+            background: #aaa;
+            text-align: right;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            min-height: 60px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .btn-calc {
+            height: 60px;
+            font-size: 20px;
+            border-radius: 50%;
+            width: 60px;
+            margin: 5px;
+        }
+
+        .btn-number { 
+            background: #ff9800; 
+            color: white; 
+            border: none; 
+        }
+        .btn-operator { 
+            background: #ff9800; 
+            color: white; 
+            border: none; 
+        }
+        .btn-clear { 
+            background: #d32f2f; 
+            color: white; 
+            border: none; 
+        }
+        .btn-equal { 
+            background: #4caf50; 
+            color: white; 
+            border: none; 
+        }
+        .btn-backspace { 
+            background: #1976d2; 
+            color: white; 
+            border: none; 
+        }
+
+        .btn-number:hover, .btn-operator:hover, .btn-equal:hover, .btn-clear:hover, .btn-backspace:hover {
+            transform: scale(1.02);
+            opacity: 0.8;
+        }
+    </style>
+    
+    <script>
+        function addToDisplay(value) {
+            document.getElementById("calculation").innerText += value;
+        }
+
+        function clearDisplay() {
+            document.getElementById("calculation").innerText = "";
+            document.getElementById("result").innerText = "";
+        }
+
+        function deleteLast() {
+            let currentText = document.getElementById("calculation").innerText;
+            document.getElementById("calculation").innerText = currentText.slice(0, -1);
+        }
+
+        function calculateResult() {
+            try {
+                let expression = document.getElementById("calculation").innerText;
+                let operator, numbers;
+                
+                if (expression.includes("+")) {
+                    operator = "+";
+                } else if (expression.includes("-")) {
+                    operator = "-";
+                } else if (expression.includes("*")) {
+                    operator = "*";
+                } else if (expression.includes("/")) {
+                    operator = "/";
+                } else {
+                    document.getElementById("result").innerText = "Error!";
+                    return;
+                }
+
+                numbers = expression.split(operator);
+                let num1 = parseFloat(numbers[0]);
+                let num2 = parseFloat(numbers[1]);
+
+                let result;
+                switch (operator) {
+                    case "+":
+                        result = num1 + num2;
+                        break;
+                    case "-":
+                        result = num1 - num2;
+                        break;
+                    case "*":
+                        result = num1 * num2;
+                        break;
+                    case "/":
+                        result = num2 !== 0 ? num1 / num2 : "Error!";
+                        break;
+                    default:
+                        result = "Error!";
+                }
+
+                document.getElementById("result").innerText = result;
+            } catch {
+                document.getElementById("result").innerText = "Error!";
+            }
+        }
+
+        document.addEventListener("keydown", function(event) {
+            if (event.key >= "0" && event.key <= "9") {
+                addToDisplay(event.key);
+            } else if (event.key === ".") {
+                addToDisplay(".");
+            } else if (event.key === "+") {
+                addToDisplay("+");
+            } else if (event.key === "-") {
+                addToDisplay("-");
+            } else if (event.key === "*") {
+                addToDisplay("*");
+            } else if (event.key === "/") {
+                addToDisplay("/");
+            } else if (event.key === "Enter") {
+                calculateResult();
+            } else if (event.key === "Backspace") {
+                deleteLast();
+            } else if (event.key === "Escape") {
+                clearDisplay();
+            }
+        });
+    </script>
+</head>
+<body>
+    <div class="calculator text-center">
+        <div class="display">
+            <div id="calculation"></div>
+            <div id="result"></div>
+        </div>
+
+        <div class="d-flex flex-wrap justify-content-center">
+            <button class="btn btn-calc btn-clear" onclick="clearDisplay()">AC</button>
+            <button class="btn btn-calc btn-backspace" onclick="deleteLast()">⌫</button>
+            <button class="btn btn-calc btn-operator" onclick="addToDisplay('%')">%</button>
+            <button class="btn btn-calc btn-operator" onclick="addToDisplay('/')">÷</button>
+            
+            <button class="btn btn-calc btn-number" onclick="addToDisplay('7')">7</button>
+            <button class="btn btn-calc btn-number" onclick="addToDisplay('8')">8</button>
+            <button class="btn btn-calc btn-number" onclick="addToDisplay('9')">9</button>
+            <button class="btn btn-calc btn-operator" onclick="addToDisplay('*')">×</button>
+            
+            <button class="btn btn-calc btn-number" onclick="addToDisplay('4')">4</button>
+            <button class="btn btn-calc btn-number" onclick="addToDisplay('5')">5</button>
+            <button class="btn btn-calc btn-number" onclick="addToDisplay('6')">6</button>
+            <button class="btn btn-calc btn-operator" onclick="addToDisplay('-')">−</button>
+            
+            <button class="btn btn-calc btn-number" onclick="addToDisplay('1')">1</button>
+            <button class="btn btn-calc btn-number" onclick="addToDisplay('2')">2</button>
+            <button class="btn btn-calc btn-number" onclick="addToDisplay('3')">3</button>
+            <button class="btn btn-calc btn-operator" onclick="addToDisplay('+')">+</button>
+            
+            <button class="btn btn-calc btn-number" onclick="addToDisplay('0')">0</button>
+            <button class="btn btn-calc btn-number" onclick="addToDisplay('00')">00</button>
+            <button class="btn btn-calc btn-number" onclick="addToDisplay('.')">.</button>
+            <button class="btn btn-calc btn-equal" onclick="calculateResult()">=</button>
+        </div>
+    </div>
+</body>
+</html>

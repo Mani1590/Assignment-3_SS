@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplication & Division</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #1e1e1e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            max-width: 400px;
+        }
+
+        .card {
+            background: #282828;
+            border-radius: 10px;
+            box-shadow: 0px 0px 15px rgba(0, 255, 255, 0.2);
+            text-align: center;
+            padding: 25px;
+        }
+
+        h2 {
+            color: #00ffff;
+        }
+
+        .form-label {
+            color: #fff;
+        }
+
+        .form-control {
+            border: 2px solid #00ffff;
+            background: #333;
+            color: #fff;
+        }
+
+        .form-control::placeholder {
+            color: white;
+            opacity: 0.8;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #ff00ff;
+            box-shadow: 0 0 10px #ff00ff;
+        }
+
+        .btn-custom {
+            background: #00ffff;
+            color: #000;
+            border-radius: 5px;
+            transition: 0.3s ease-in-out;
+        }
+
+        .btn-custom:hover {
+            background: #ff00ff;
+            color: #fff;
+            box-shadow: 0px 0px 10px #ff00ff;
+        }
+
+        #result {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 15px;
+            color: #00ff00;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+
+    <script>
+        function cal(operator) {
+            let num1 = parseFloat(document.getElementById("num-1").value);
+            let num2 = parseFloat(document.getElementById("num-2").value);
+            let result = 0;
+
+            if (isNaN(num1) || isNaN(num2)) {
+                document.getElementById("result").innerHTML = `<p class="error">❌ Please enter valid numbers!</p>`;
+                return;
+            }
+            if (operator === 'mul') {
+                result = num1 * num2;
+            } else if (operator === 'div') {
+                if (num2 == 0) {
+                    document.getElementById("result").innerHTML = `<p class="error">⚠️ Cannot divide by 0!</p>`;
+                    return;
+                }
+                result = num1 / num2;
+            }
+            document.getElementById("result").innerHTML = `<p>✅ <strong>Result:</strong> ${result}</p>`;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <h2>Multiplication & Division</h2>
+
+            <div class="mb-3">
+                <label class="form-label"><strong>1st Number:</strong></label>
+                <input type="number" class="form-control" id="num-1" placeholder="Enter the 1st Number">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label"><strong>2nd Number:</strong></label>
+                <input type="number" class="form-control" id="num-2" placeholder="Enter the 2nd Number">
+            </div>
+
+            <div class="d-grid gap-2">
+                <button class="btn btn-custom" onclick="cal('mul')">Multiply</button>
+                <button class="btn btn-custom" onclick="cal('div')">Divide</button>
+            </div>
+
+            <p id="result"></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

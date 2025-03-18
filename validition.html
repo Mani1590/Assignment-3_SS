@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #908c8cb1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: rgb(201, 195, 195);
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 10px 10px 50px rgba(2, 2, 2, 0.2);
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            display: block;
+        }
+    </style>
+
+    <script>
+        function validForm() {
+            let isValid = true;
+            let name = document.getElementById("name").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let phone = document.getElementById("phone").value.trim();
+            let age = document.getElementById("age").value.trim();
+
+            if (name === "") {
+                document.getElementById("nameError").innerText = "Name is required!";
+                isValid = false;
+            } else {
+                document.getElementById("nameError").innerText = "";
+            }
+
+            let emailValid = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!emailValid.test(email)) {
+                document.getElementById("emailError").innerText = "Invalid email!";
+                isValid = false;
+            } else {
+                document.getElementById("emailError").innerText = "";
+            }
+
+            if (age === "" || age < 18 || age > 60) {
+                document.getElementById("ageError").innerText = "Age must be between 18-60!";
+                isValid = false;
+            } else {
+                document.getElementById("ageError").innerText = "";
+            }
+
+            let phonePattern = /^[0-9]{10}$/;
+            if (!phonePattern.test(phone)) {
+                document.getElementById("phoneError").innerText = "Enter a valid 10-digit phone number!";
+                isValid = false;
+            } else {
+                document.getElementById("phoneError").innerText = "";
+            }
+
+            return isValid;
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2 class="mb-4">JS Form Validation</h2>
+        <form onsubmit="return validForm()">
+            <div class="mb-3">
+                <label for="name" class="form-label"><strong>Name:</strong></label>
+                <input type="text" class="form-control" id="name" placeholder="Enter your name">
+                <span class="error" id="nameError"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label"><strong>Email:</strong></label>
+                <input type="email" class="form-control" id="email" placeholder="Enter your email">
+                <span class="error" id="emailError"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="age" class="form-label"><strong>Age:</strong></label>
+                <input type="number" class="form-control" id="age" placeholder="Enter your age">
+                <span class="error" id="ageError"></span>
+            </div>
+
+            <div class="mb-3">
+                <label for="phone" class="form-label"><strong>Phone Number:</strong></label>
+                <input type="text" class="form-control" id="phone" placeholder="Enter your phone number">
+                <span class="error" id="phoneError"></span>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Submit</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
